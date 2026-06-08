@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     conn.commit()
     cur.close()
     
-# Verificar de email está cadastrado
+# Verificar de email ja está cadastrado
 def check_email(email):
     conn = sqlite3.connect('users.db')
     cur = conn.cursor()
@@ -66,3 +66,23 @@ def login_user(email, password):
             return 'Check'
     
     return 'Email ou Senha incorretos'
+
+def user_things(id):
+    conn = sqlite3.connect('users.db')
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM usuarios WHERE id=?', (id,))
+    # Pegar dados
+    result = cur.fetchone()
+    conn.close()
+    print(result)
+    return result
+
+def id_from_email(email):
+    conn = sqlite3.connect('users.db')
+    cur = conn.cursor()
+    cur.execute('SELECT id FROM usuarios WHERE email=?', (email,))
+    # Pegar dados
+    result = cur.fetchone()
+    conn.close()
+    print(result)
+    return result

@@ -1,11 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 </head>
+
 <body>
-    <h1>Cadastro</h1>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for mensagem in messages %}
+        {% if mensagem == 'Conta criada com sucesso!' %}
+        <p style="color: rgb(0, 255, 0);"><b>{{ mensagem }}</b></p>
+        {% else %}
+        <p style="color: red;"><b>{{ mensagem }}</b></p>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <form method="POST" autocomplete="off">
+            <h1 class="text-login">CADASTRO</h1>
+            <p class="text-login">Coloque seus dados para se cadastrar no site</p>
+            <div class="input-service-name">
+                <input placeholder="Nome" required type="text" name="nome">
+            </div>
+            <div class="input-service-email">
+                <input placeholder="Email" required type="email" name="email">
+            </div>
+            <div class="input-service-password">
+                <input autocomplete="new-password" placeholder="Senha" minlength="8" required type="password" name="password">
+            </div>
+            <div class="select-input">
+                <select name="estado" required>
+                    <option value="" selected disabled>Selecionar</option>
+
+                    <option value="AC">Acre (AC)</option>
+                    <option value="AL">Alagoas (AL)</option>
+                    <option value="AP">Amapá (AP)</option>
+                    <option value="AM">Amazonas (AM)</option>
+                    <option value="BA">Bahia (BA)</option>
+                    <option value="CE">Ceará (CE)</option>
+                    <option value="DF">Distrito Federal (DF)</option>
+                    <option value="ES">Espírito Santo (ES)</option>
+                    <option value="GO">Goiás (GO)</option>
+                    <option value="MA">Maranhão (MA)</option>
+                    <option value="MT">Mato Grosso (MT)</option>
+                    <option value="MS">Mato Grosso do Sul (MS)</option>
+                    <option value="MG">Minas Gerais (MG)</option>
+                    <option value="PA">Pará (PA)</option>
+                    <option value="PB">Paraíba (PB)</option>
+                    <option value="PR">Paraná (PR)</option>
+                    <option value="PE">Pernambuco (PE)</option>
+                    <option value="PI">Piauí (PI)</option>
+                    <option value="RJ">Rio de Janeiro (RJ)</option>
+                    <option value="RN">Rio Grande do Norte (RN)</option>
+                    <option value="RS">Rio Grande do Sul (RS)</option>
+                    <option value="RO">Rondônia (RO)</option>
+                    <option value="RR">Roraima (RR)</option>
+                    <option value="SC">Santa Catarina (SC)</option>
+                    <option value="SP">São Paulo (SP)</option>
+                    <option value="SE">Sergipe (SE)</option>
+                    <option value="TO">Tocantins (TO)</option>
+                </select>
+            </div>
+            <div class="input-checkbox" >
+                <input type="checkbox" required>
+                <p>Ao criar uma conta você concorda com os <a href="/Termos" style="color: Blue;">Termos de Condições</a></p>
+            </div>
+            <div class="submit-button">
+                <button type="submit"><b>CADASTRAR</b></button>
+            </div>
+            <div class="cadast2-link">
+                Já possui uma conta? <a href="/login">Entrar</a>
+            </div>
+        </form>
+    </div>
 </body>
+
 </html>

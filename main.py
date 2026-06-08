@@ -1,18 +1,17 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from email_validator import validate_email, EmailNotValidError
-from app.database import create_db, check_email, login_user
-
+from app.database import create_db, login_user, new_user, user_things
 app = Flask(__name__)
 
 app.secret_key = 'chaveultrasecretanãoreveleparaninguem'
 
 # Verifica se o email é verdadeiro
-def verificar_email(email):
+def check_email(email):
     try:
         validate_email(email, check_deliverability=True)
     except EmailNotValidError:
-        return 'O email inserido é inválido'
-    return 'Check'
+        return False
+    return True
 
 #-Rotas-#
 
@@ -27,9 +26,9 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         pw = request.form.get('password')
-        email_chec = verificar_email(email)
+
         # Verifica de email é verdadeiro
-        if email_chec != 'Check':
+        if not check_email(email):
             flash('Email ou Senha incorretos')
             return redirect(url_for('login'))
         
@@ -47,8 +46,29 @@ def login():
     return render_template('login.html')
 
 # Cadastro
-@app.route('/cadastro')
+@app.route('/cadastro', methods=['GET','POST'])
 def register():
+    if request.method == 'POST':
+        name = request.form.get('nome')
+        password = request.form.get('password')
+        email = request.form.get('email')
+        estado = request.form.get('estado')
+
+        # Email inválido
+        if not check_email(email):
+            flash('O email inserido não é válido. Tente novamente com um email válido')
+            return redirect(url_for('register'))
+        result = new_user(name,password,email,estado)
+        if not result:
+            flash('O email inserido ja está cadastrado. Tente novamente com outro email')
+            return redirect(url_for('register'))
+    
+        return '''
+<script>
+    alert("Conta criada com sucesso!");
+    window.location.href = "/login";
+</script>
+'''
     return render_template('newuser.html')
 
 # Executar app
